@@ -13,9 +13,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/', (req, res) => {
 	console.log(req.body);
-	var childProcess = cp.spawn('swipl');
+	var childProcess = cp.spawn('ping', ['127.0.0.1']);
 
-	childProcess.stdin.write('X is 1.');
+	childProcess.stdin.write('1 + 2');
 
 	var stdin = process.openStdin();
 	stdin.addListener('data', (data) => {
@@ -23,27 +23,14 @@ app.post('/', (req, res) => {
 		console('haaah');
 	});
 
-	// childProcess.stderr.on('data', (data) => {
-	// 	console.log(`${data}`);
-	// 	var stdin = process.openStdin();
-	// });
+	childProcess.stderr.on('data', (data) => {
+		console.log(`${data}`);
+	});
 
 	childProcess.stdout.on('data', (data) => {
 		console.log(`${data}`);
-		var stdin = process.openStdin();
 	});
 
-
-
-	childProcess.addListener('data', (data)=> {
-		childProcess.stdin.write(';\n');
-
-	});
-
-	// childProcess.stdout.on('data', (data) => {
-	// 	console.log(`${data}`);
-	// });
-	// childProcess.stdout.setEncoding('utf8');
 	res.send('lol');
 });
 
