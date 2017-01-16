@@ -11,21 +11,7 @@ app.use('/', routes);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.static(path.join(__dirname, 'public')));
-// peng = pengines({
-//   server: "http://localhost:3030/pengine",
-//   chunk: 1,
-//   ask: 'assign_sched(CoursesSched,GroupsSched,[[[2,10], [8,3], [13,25]]],[[[], [1,2], [1,2]]], 1, 3, 2 ).',
-//   destroy:false
-// }).on('success', function(result) {
-//   var i, len, ref, resultData, results;
-//   ref = result.data;
-//   results = [];
-//   for (i = 0, len = ref.length; i < len; i++) {
-//     resultData = ref[i];
-//     results.push(console.log(resultData.CoursesSched));
-//   }
-//   return results;
-// });
+
 var peng = require('./connection')
 peng.connect();
 
@@ -36,65 +22,60 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(cors());
 
-app.post('/', (req, res) => {
-	console.log(req.body);
-	var childProcess = cp.spawn('swipl');
-
-	childProcess.stdin.write('1 + 2');
-
-	var stdin = process.openStdin();
-	stdin.addListener('data', (data) => {
-		childProcess.stdin.write(';\n');
-		console('haaah');
-	});
-
-	childProcess.stderr.on('data', (data) => {
-		console.log(`${data}`);
-	});
-
-	childProcess.stdout.on('data', (data) => {
-		console.log(`${data}`);
-	});
-
-	res.send('lol');
+app.get('/', (req, res) => {
+	res.send("Use /upload to upload csv and /plquery to start scheduler");
 });
-app.locals.test = "omar"
-
-  app.listen(8888);
 
 
+app.listen(8888);
 
 
 
+function parse(entries) {
+	var parsedTimings = new Array();
+	var parsedGroups = new Array();
+	var courseNames = new Array();
+	var parsedGroupNames = new Array();
+	var groupMap = new Array();
+	var groupSoFar = 0;
+	for(var i = 0; i < entries.length;) {
+		var timingsCourse = new Array();
+		var groupsCourse = new Array();
+		var course = entries[i][0];
+		courseNames.push(course);
+		for(var j = i; j < entries.length && course == entries[j][0];) {
+			var type = entries[j][4];
+			for(var k = j; k < entries.length && type == entries[k][4];) {
+				var group = entries[k][5];
+				var idx = timingsCourse.length;
+				if(!groupMap[group]) {
+					groupSoFar++;
+					groupMap[group] = groupSoFar;
+				}
+				for(var l = k; l < entries.length && group == entries[l][5]; l++) {
+					if(!timingsCourse[idx])
+						timingsCourse[idx] = new Array();
+					if(!groupsCourse[idx]) {
+						groupsCourse[idx] = new Array();
+						parsedGroupNames[idx] = new Array();
+					}
+					timingsCourse[idx].push(entries[l][3]);
+					if(type != 'Lecture') {
+						groupsCourse[idx].push(groupMap[group]);
+						parsedGroupNames[idx].push(course + ' ' + group);
+					}
+				}
+				k = l;
+			}
+			j = k;
+		}
+		i = j;
+	}
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// var childProcess = cp.spawn('swipl', ['mini3.pl']);
-//
-// childProcess.stdout.setEncoding('utf8');
-//
-// var data_line = '';
-// childProcess.stdin.write(query);
-// var stdin = process.openStdin();
-// stdin.addListener("data", function(d) {
-//     childProcess.stdin.write(';\n');
-// });
-// childProcess.stdout.on("data", function(data) {
-//   data_line += data;
-//   if (data_line.split('=').length - 1 == 2) {
-//     console.log(data_line);
-//     data_line = '';
-//     var stdin = process.openStdin();
-//   }
-// });
+function csvToArray (csv) {
+	rows  = csv.split("\n");
+	return rows.map(function (row) {
+		return row.split(",");
+	});
+};
