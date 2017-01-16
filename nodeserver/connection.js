@@ -24,6 +24,18 @@ module.exports = {
             }
             callback(results);
         });
-    }
+    },
+    next: function(callback) {
+        peng.next().on('success', function(result) {
+            var i, len, ref, resultData, results;
+            ref = result.data;
+            results = [];
+            for (i = 0, len = ref.length; i < len; i++) {
+                resultData = ref[i];
+                results.push(resultData);
+            }
+            callback(results);
+        });
+    }    
 
 }
