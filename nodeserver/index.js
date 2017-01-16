@@ -11,21 +11,7 @@ app.use('/', routes);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.static(path.join(__dirname, 'public')));
-// peng = pengines({
-//   server: "http://localhost:3030/pengine",
-//   chunk: 1,
-//   ask: 'assign_sched(CoursesSched,GroupsSched,[[[2,10], [8,3], [13,25]]],[[[], [1,2], [1,2]]], 1, 3, 2 ).',
-//   destroy:false
-// }).on('success', function(result) {
-//   var i, len, ref, resultData, results;
-//   ref = result.data;
-//   results = [];
-//   for (i = 0, len = ref.length; i < len; i++) {
-//     resultData = ref[i];
-//     results.push(console.log(resultData.CoursesSched));
-//   }
-//   return results;
-// });
+
 var peng = require('./connection')
 peng.connect();
 
@@ -36,8 +22,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(cors());
 
-app.post('/', (req, res) => {
-
+app.get('/', (req, res) => {
+	res.send("Use /upload to upload csv and /plquery to start scheduler");
 });
 
 
@@ -88,8 +74,8 @@ function parse(entries) {
 }
 
 function csvToArray (csv) {
-    rows  = csv.split("\n");
-    return rows.map(function (row) {
-    	return row.split(",");
-    });
+	rows  = csv.split("\n");
+	return rows.map(function (row) {
+		return row.split(",");
+	});
 };
