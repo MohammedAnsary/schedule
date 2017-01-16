@@ -7,8 +7,7 @@ module.exports = {
     connect: function() {
         peng = pengines({
             server: "http://localhost:3030/pengine",
-            chunk: 1,
-            destroy: false
+            chunk: 1
         }).on('create', function() {
             console.log('connected to pl server');
         });
@@ -17,6 +16,7 @@ module.exports = {
         peng.ask(q).on('success', function(result) {
             var i, len, ref, resultData, results;
             ref = result.data;
+            console.log(result.id);
             results = [];
             for (i = 0, len = ref.length; i < len; i++) {
                 resultData = ref[i];
@@ -26,7 +26,8 @@ module.exports = {
         });
     },
     next: function(callback) {
-        peng.next().on('success', function(result) {
+        var prologRequest = peng.next();
+        prologRequest.on('success', function(result) {
             var i, len, ref, resultData, results;
             ref = result.data;
             results = [];
@@ -35,6 +36,9 @@ module.exports = {
                 results.push(resultData);
             }
             callback(results);
+        });
+        prologRequest.on('error',function(result){
+            callback(result);
         });
     }    
 
