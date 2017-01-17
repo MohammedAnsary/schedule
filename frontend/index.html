@@ -1,37 +1,53 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<link rel="stylesheet" href="assets/css/material.min.css">
-		<link rel="stylesheet" href="assets/css/checkbox.css">
-		<link rel="stylesheet" href="assets/css/custom.css">
-		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	</head>
-	<body>
-		<div class="section section-left">
-			<form id="upload-form" method="post" enctype="multipart/form-data">
-				<input type="file" name="fileToUpload" id="fileToUpload" hidden>
-				<div class="mdl-textfield mdl-js-textfield" id="filename-group">
-					<input class="mdl-textfield__input" type="text" id="filename" disabled>
-					<label class="mdl-textfield__label" for="filename" id="filename-label">Click to choose a csv file ...</label>
- 				</div>
-				<br />
-				<input style="vertical-alighn: top" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="submit" value="Upload" name="submit">
-				<span class="loading-span">
+
+<head>
+	<link rel="stylesheet" href="assets/css/material.min.css">
+	<link rel="stylesheet" href="assets/css/checkbox.css">
+	<link rel="stylesheet" href="assets/css/custom.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body>
+	<div class="section section-left">
+		<form id="upload-form" method="post" enctype="multipart/form-data">
+			<input type="file" name="fileToUpload" id="fileToUpload" hidden>
+			<div class="mdl-textfield mdl-js-textfield" id="filename-group">
+				<input class="mdl-textfield__input" type="text" id="filename" disabled>
+				<label class="mdl-textfield__label" for="filename" id="filename-label">Click to choose a csv file ...</label>
+			</div>
+			<br />
+			<input style="vertical-alighn: top" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="submit" value="Upload" name="submit">
+			<span class="loading-span">
 					<div class="mdl-spinner mdl-js-spinner is-active fix-position hidden"></div>
 				</span>
-			</form>
-			<form id="inputs-form" method="post">
-				<div class="subsection" id="parsed-courses">
+		</form>
+		<form id="inputs-form" method="post">
+			<br />
+			<label class="label--checkbox">
+				Probation
+				<input type="checkbox" class="checkbox" id="probation" name="probation">
+			</label>
+			<label class="label--checkbox">
+				Condensed
+				<input type="checkbox" class="checkbox" id="condensed" name="condensed">
+			</label>
+			<div class="mdl-textfield mdl-js-textfield">
+				<input class="mdl-textfield__input" type="text" id="credits" name="credits">
+				<label class="mdl-textfield__label" for="credits">Allowed credit hours</label>
+			</div>
+			<div class="subsection" id="parsed-courses">
 
-				</div>
-			</form>
-		</div>
-		<div class="section section-right">
+			</div>
+		</form>
+	</div>
+	<div class="section section-right">
 
-		</div>
+	</div>
 
-		<script src="assets/js/material.min.js"></script>
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/custom.js"></script>
-	</body>
+	<script src="assets/js/material.min.js"></script>
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/custom.js"></script>
+</body>
+
 </html>

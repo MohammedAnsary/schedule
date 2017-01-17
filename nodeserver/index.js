@@ -62,7 +62,6 @@ app.post('/upload', function(req, res) {
 			}
 			var arr = csvToArray(data);
 			var parsed = parse(arr);
-			console.log(parsed.groupMap)
 			res.json(parsed);
 		});
 	});
@@ -75,26 +74,38 @@ function parse(entries) {
     var parsedGroups = new Array();
     var courseNames = new Array();
     var parsedGroupNames = new Array();
+	var slotsNames = new Array();
     var groupMap = {};
     var groupSoFar = 0;
-    for (var i = 0; i < entries.length;) {
+	for (var w = 0; w < entries.length - 1; w++) {
+		var str = entries[w][5].trim().replace(/ +/g, ' ');
+		console.log(str);
+		var length = str.length;
+		var idx = length - 3;
+		entries[w][5] = str.substr(0, idx) + str.substr(idx + 1, length);
+	}
+    for (var i = 0; i < entries.length - 1;) {
         var timingsCourse = new Array();
         var groupsCourse = new Array();
+		var groupSlots = new Array();
         var course = entries[i][0];
+		slotsNames.push(groupSlots);
 		parsedTimings.push(timingsCourse);
 		parsedGroups.push(groupsCourse);
         courseNames.push(course);
         for (var j = i; j < entries.length && course == entries[j][0];) {
             var type = entries[j][4];
+			var idx;
             for (var k = j; k < entries.length && type == entries[k][4];) {
                 var group = entries[k][5];
-                var idx = 0;
+                idx = 0;
                 if (!groupMap[group]) {
                     groupSoFar++;
                     groupMap[group] = groupSoFar;
                 }
                 for (var l = k; l < entries.length && group == entries[l][5]; l++) {
-                    if (!timingsCourse[idx])
+
+					if (!timingsCourse[idx])
                         timingsCourse[idx] = new Array();
                     if (!groupsCourse[idx]) {
                         groupsCourse[idx] = new Array();
@@ -109,6 +120,9 @@ function parse(entries) {
                 }
                 k = l;
             }
+			for(var index = 0; index < idx; index++) {
+				groupSlots.push(type);
+			}
             j = k;
         }
         i = j;
@@ -118,7 +132,8 @@ function parse(entries) {
 		parsedGroups: parsedGroups,
 		courseNames: courseNames,
 		parsedGroupNames: parsedGroupNames,
-		groupMap: groupMap
+		groupMap: groupMap,
+		slotsNames: slotsNames
 	}
 	return parsed;
 }
