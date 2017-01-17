@@ -9,9 +9,10 @@ var pengines = require('pengines');
 var routes = require('./routes/main');
 var fileUpload = require('express-fileupload');
 
-
+app.use('/', routes);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
+app.use('/', routes);
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
@@ -44,8 +45,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
 	res.send("Use /upload to upload csv and /plquery to start scheduler");
 });
-app.use('/', routes);
 
+app.post('/upload', function(req, res) {
+    fs.writeFile("uploads/data.csv", req.files.fileToUpload, function(err) {
+    if(err) {
+        return console.log(err);
+    }
+    console.log("The file was saved!");
+    });
+    // console.log(req.files)
+
+    res.send('test');
+});
 app.listen(8888);
 
 
@@ -98,4 +109,3 @@ function csvToArray (csv) {
 		return row.split(",");
 	});
 };
-
