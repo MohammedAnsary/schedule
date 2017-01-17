@@ -77,18 +77,17 @@ function parse(entries) {
 	var slotsNames = new Array();
     var groupMap = {};
     var groupSoFar = 0;
-	// for (var w = 0; w < entries.length - 1; w++) {
-	// 	var str = entries[w][5].trim().replace(/ +/g, ' ');
-	// 	var length = str.length;
-	// 	var idx = length - 3;
-	// 	entries[w][5] = str.substr(0, idx) + str.substr(idx + 1, length);
-	// }
-    for (var i = 0; i < entries.length;) {
+	for (var w = 0; w < entries.length - 1; w++) {
+		var str = entries[w][5].trim().replace(/ +/g, ' ');
+		var length = str.length;
+		var idx = length - 3;
+		entries[w][5] = str.substr(0, idx) + str.substr(idx + 1, length);
+	}
+    for (var i = 0; i < entries.length - 1;) {
         var timingsCourse = new Array();
         var groupsCourse = new Array();
 		var groupSlots = new Array();
         var course = entries[i][0];
-		console.log(course);
 		slotsNames.push(groupSlots);
 		parsedTimings.push(timingsCourse);
 		parsedGroups.push(groupsCourse);
@@ -96,15 +95,15 @@ function parse(entries) {
         for (var j = i; j < entries.length && course == entries[j][0];) {
             var type = entries[j][4];
 			var idx;
-            for (var k = j; k < entries.length && type == entries[k][4];) {
+            for (var k = j; k < entries.length && type == entries[k][4]&& course == entries[k][0];) {
                 var group = entries[k][5];
+				console.log(group);
                 idx = 0;
                 if (!groupMap[group]) {
                     groupSoFar++;
                     groupMap[group] = groupSoFar;
                 }
-                for (var l = k; l < entries.length && group == entries[l][5]; l++) {
-
+                for (var l = k; l < entries.length && group == entries[l][5] && type == entries[l][4]&& course == entries[l][0]; l++) {
 					if (!timingsCourse[idx])
                         timingsCourse[idx] = new Array();
                     if (!groupsCourse[idx]) {

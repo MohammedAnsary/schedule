@@ -51,7 +51,7 @@ $(document).ready(function(){
 					var i = j+1;
 					$('#parsed-courses-body').append(`
 						<tr>
-							<td class="mdl-data-table__cell--non-numeric">${response.courseNames[i]}</td>
+							<td class="mdl-data-table__cell--non-numeric">${response.courseNames[j]}</td>
 							<td class="mdl-data-table__cell--non-numeric" style="text-align:center;">
 								<input type="checkbox" class="checkbox" id="oblig${i}-box" name="oblig${i}" class="mdl-checkbox__input">
 							</td>
