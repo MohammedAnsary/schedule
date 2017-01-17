@@ -32,12 +32,8 @@ app.use(function (req, res, next) {
 });
 
 var peng = require('./connection')
-<<<<<<< HEAD
 //peng.connect();
 
-=======
-peng.connect();
->>>>>>> d8eb6b070d6bceaa5cb2dd149c4ce2378f9655ab
 //peng.next();
 // app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
