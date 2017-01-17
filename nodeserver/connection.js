@@ -27,8 +27,13 @@ module.exports = {
                     resultData = (ref.length == chunk )? ref[chunk - 1] : "No more solutions";
                     results.push(resultData);
                callback(results)              
-            });   
-           
+            });  
+        peng.on('failure', function(result){
+            callback(["no solutions found, please choose another configuration and try again"])
+        }); 
+        peng.on('error', function(result){
+            callback(result)
+        });         
     },
     getNext: function(callback) {
         var prologRequest = peng.next();
