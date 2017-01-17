@@ -9,8 +9,6 @@ var pengines = require('pengines');
 var routes = require('./routes/main');
 var fileUpload = require('express-fileupload');
 
-app.use('/', routes);
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 app.use('/', routes);
 app.use(function (req, res, next) {
