@@ -29,8 +29,46 @@ $(document).ready(function(){
 			contentType: false,
 			enctype: 'multipart/form-data',
 			processData: false,
+			beforeSend: function() {
+				$('.mdl-spinner').removeClass('hidden');
+ 			},
 			success: function (response) {
-				// alert(response);
+				$('.mdl-spinner').addClass('hidden');
+				$('#parsed-courses').append(`
+					<table class="full-width mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+						<thead>
+							<tr>
+								<th class="mdl-data-table__cell--non-numeric">Course</th>
+								<th class="mdl-data-table__cell--non-numeric" style="text-align:center;">Obligatory</th>
+								<th class="mdl-data-table__cell--non-numeric" style="text-align:center;">History</th>
+							</tr>
+						</thead>
+						<tbody id="parsed-courses-body">
+						</tbody>
+					</table>
+				`);
+				for(var j = 0; j < response.courseNames.length; j++) {
+					var i = j+1;
+					$('#parsed-courses-body').append(`
+						<tr>
+							<td class="mdl-data-table__cell--non-numeric">${response.courseNames[i]}</td>
+							<td class="mdl-data-table__cell--non-numeric" style="text-align:center;">
+								<input type="checkbox" class="checkbox" id="oblig${i}-box" name="oblig${i}" class="mdl-checkbox__input">
+							</td>
+							<td class="mdl-data-table__cell--non-numeric">
+								<fieldset id="history${i}">
+									<input type="radio" id="history${i}-2" value="2" name="history${i}">
+									<label for="history${i}-2">Passed</label>
+									<input type="radio" id="history${i}-1" value="1" name="history${i}">
+									<label for="history${i}-1">Failed</label>
+									<input type="radio" id="history${i}-0" value="0" name="history${i}" checked>
+									<label for="history${i}-0">New</label>
+								</fieldset>
+							</td>
+						</tr>
+					`);
+				}
+				// console.log(response.courseNames);
 			}
 		});
 		return false;
