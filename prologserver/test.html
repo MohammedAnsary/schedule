@@ -1,0 +1,39 @@
+<html lang="en">
+    <head>
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+	    <script src="/pengine/pengines.js"></script>
+        <script type="text/x-prolog">
+
+	   q(X) :- p(X).
+
+	   p(a).
+	   p(b).
+	   p(c).
+	   p(d).
+	   p(e).
+	   p(f).
+	   p(g).
+
+        </script>
+        <script>
+            var pengine = new Pengine({
+                oncreate: handleCreate,
+                onsuccess: handleSuccess
+            });
+            function handleCreate () {
+                pengine.ask('assign_sched(CoursesSched,GroupsSched,[[[2,10], [8,3], [13,25]]],[[[], [1,2], [1,2]]], 1, 3, 2 )', {
+                    template:'CoursesSched'
+                });
+            }
+            function handleSuccess() {
+                $('#out').html(this.data);
+            }
+        </script>
+    </head>
+    <body>
+        <div>?- q(X).</div>
+        <div id="out"></div>
+
+        <button onclick="pengine.next()">Next</button>
+    </body>
+</html>
