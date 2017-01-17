@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var index = require('../connection')
+var index = require('../connection');
+var fs = require('fs');
 
 /* GET home page. */
 // router.get('/', function(req, res, next) {
@@ -25,6 +26,18 @@ router.get('/next', function(req, res) {
         });
     });
  
+});
+
+router.post('/upload', function(req, res) {
+    fs.writeFile("uploads/data.csv", req.files.fileToUpload, function(err) {
+    if(err) {
+        return console.log(err);
+    }
+    console.log("The file was saved!");
+    });
+    // console.log(req.files)
+
+    res.send('test');
 });
 
 module.exports = router;
