@@ -1,5 +1,7 @@
 var pengines = require('pengines');
+var request = require('request');
 var peng;
+var func;
 module.exports = {
     getNext: function() {
         return 5;
@@ -7,26 +9,35 @@ module.exports = {
     connect: function() {
         peng = pengines({
             server: "http://localhost:3030/pengine",
-            chunk: 1
+            chunk: 1,
         }).on('create', function() {
             console.log('connected to pl server');
         });
     },
     ask: function(q, callback) {
-        peng.ask(q).on('success', function(result) {
-            var i, len, ref, resultData, results;
-            ref = result.data;
-            console.log(result.id);
-            results = [];
-            for (i = 0, len = ref.length; i < len; i++) {
-                resultData = ref[i];
-                results.push(resultData);
-            }
-            callback(results);
-        });
+        if(peng != undefined ) peng.destroy();
+        peng = pengines({
+            server: "http://localhost:3030/pengine",
+            chunk: 1,
+        }).on('create', function() {
+            console.log('connected to pl server');
+            peng.ask(q).on('success', function(result) {
+                var i, len, ref, resultData, results;
+                ref = result.data;
+                results = [];
+                for (i = 0, len = ref.length; i < len; i++) {
+                    resultData = ref[i];
+                    results.push(resultData);
+                }
+                func = peng.next;
+                callback(results);
+            });  
+        });        
+
+    
     },
-    next: function(callback) {
-        var prologRequest = peng.next();
+    getNext: function(callback) {
+        var prologRequest = func();
         prologRequest.on('success', function(result) {
             var i, len, ref, resultData, results;
             ref = result.data;

@@ -13,7 +13,7 @@ app.set('view engine', 'jade');
 app.use(express.static(path.join(__dirname, 'public')));
 
 var peng = require('./connection')
-peng.connect();
+//peng.connect();
 
 //peng.next();
 // app.use(bodyParser.urlencoded());
@@ -79,3 +79,4 @@ function csvToArray (csv) {
 		return row.split(",");
 	});
 };
+
