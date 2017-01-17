@@ -6,11 +6,23 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	</head>
 	<body>
-		<div class="section">
-			
+		<div class="section section-left">
+			<form id="upload-form" method="post" enctype="multipart/form-data">
+				<input type="file" name="fileToUpload" id="fileToUpload" hidden>
+				<div class="mdl-textfield mdl-js-textfield" id="filename-group">
+					<input class="mdl-textfield__input" type="text" id="filename" disabled>
+					<label class="mdl-textfield__label" for="filename" id="filename-label">Choose file ...</label>
+ 				</div>
+				<br />
+				<input class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="submit" value="Upload" name="submit">
+			</form>
+		</div>
+		<div class="section section-right">
+
 		</div>
 
 		<script src="assets/js/material.min.js"></script>
 		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/custom.js"></script>
 	</body>
 </html>
