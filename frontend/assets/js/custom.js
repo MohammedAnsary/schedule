@@ -1,3 +1,4 @@
+var parsed;
 $(document).ready(function(){
 	$.ajaxSetup({
 		crossDomain: true,
@@ -33,6 +34,7 @@ $(document).ready(function(){
 				$('.mdl-spinner').removeClass('hidden');
  			},
 			success: function (response) {
+				parsed = response;
 				$('.mdl-spinner').addClass('hidden');
 				$('#parsed-courses').append(`
 					<table class="full-width mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
@@ -69,8 +71,28 @@ $(document).ready(function(){
 					`);
 				}
 				// console.log(response.courseNames);
+				$('#create-btn').removeAttr('disabled');
 			}
 		});
 		return false;
+	});
+	$("#inputs-form").submit(function(evt){
+		evt.preventDefault();
+		formData.parsed = parsed;
+		$.ajax({
+			url: 'http://localhost:8888/upload',
+			type: 'POST',
+			data: formData,
+			async: false,
+			cache: false,
+			contentType: 'application/json',
+			processData: false,
+			beforeSend: function() {
+				
+ 			},
+			success: function (response) {
+
+			}
+		})
 	});
 });
