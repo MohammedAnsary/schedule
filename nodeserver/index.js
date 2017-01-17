@@ -10,8 +10,13 @@ var routes = require('./routes/main');
 var fileUpload = require('express-fileupload');
 var fs = require('fs');
 
+app.use(bodyParser.json());
+app.use(bodyParser.json({type: 'application/vnd.api+json'}));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(fileUpload());
-app.use('/', routes);
+
 app.use(function(req, res, next) {
 
     // Website you wish to allow to connect
@@ -36,13 +41,8 @@ var peng = require('./connection')
 
 //peng.next();
 // app.use(bodyParser.urlencoded());
-app.use(bodyParser.json());
-// app.use(bodyParser.json({type: 'application/vnd.api+json'}));
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
 // app.use(cors());
-
+app.use('/', routes);
 app.get('/', (req, res) => {
     res.send("Use /upload to upload csv and /plquery to start scheduler");
 });

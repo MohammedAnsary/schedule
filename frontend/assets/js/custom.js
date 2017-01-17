@@ -78,17 +78,27 @@ $(document).ready(function(){
 	});
 	$("#inputs-form").submit(function(evt){
 		evt.preventDefault();
-		formData.parsed = parsed;
+		// formData.parsed = parsed;
+		// var formData = new FormData($(this)[0]);
+		var formData = $("#inputs-form").serializeArray();
+		var data = {}
+		// formData.parsed = parsed;
+
+		$.each(formData, function(i, field) {
+			data[field.name] = field.value;
+		});
+		data['parsed'] = parsed;
+		// formData.parsed = parsed;
 		$.ajax({
-			url: 'http://localhost:8888/upload',
+			url: 'http://localhost:8888/next',
 			type: 'POST',
-			data: formData,
+			data: JSON.stringify(data),
 			async: false,
 			cache: false,
 			contentType: 'application/json',
 			processData: false,
 			beforeSend: function() {
-				
+
  			},
 			success: function (response) {
 
