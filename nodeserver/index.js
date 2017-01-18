@@ -88,16 +88,18 @@ function parse(entries) {
         var groupsCourse = new Array();
 		var groupSlots = new Array();
         var course = entries[i][0];
+		var idx = 0;
+		var index = 0;
+		var tmpidx = 0;
 		slotsNames.push(groupSlots);
 		parsedTimings.push(timingsCourse);
 		parsedGroups.push(groupsCourse);
         courseNames.push(course);
         for (var j = i; j < entries.length && course == entries[j][0];) {
             var type = entries[j][4];
-			var idx;
             for (var k = j; k < entries.length && type == entries[k][4]&& course == entries[k][0];) {
                 var group = entries[k][5];
-                idx = 0;
+				idx = index;
                 if (!groupMap[group]) {
                     groupSoFar++;
                     groupMap[group] = groupSoFar;
@@ -117,11 +119,13 @@ function parse(entries) {
 					idx++;
                 }
                 k = l;
+				tmpidx = idx;
             }
-			for(var index = 0; index < idx; index++) {
+			for(var x = 0; x < Math.abs(tmpidx - index); x++) {
 				groupSlots.push(type);
 			}
             j = k;
+			index = tmpidx;
         }
         i = j;
     }
