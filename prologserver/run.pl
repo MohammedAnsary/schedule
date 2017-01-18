@@ -178,7 +178,7 @@ get_sched_with_slot_names([H|T], FlatTakenSlotsNames, [X|NewCoursesSched]):-
                                                                              H \=0,
                                                                              nth1(H,FlatTakenSlotsNames,X),
                                                                              get_sched_with_slot_names(T,FlatTakenSlotsNames,NewCoursesSched).                                                                             
-choose_subjects_and_generate_schedule(AllowedCreditHours, ObligatoryCourses, CoursesCreditHours, Probation, History, Prerequisites, CoursesTimings, CoursesGroups, SlotsNames, Condensed, TotalCreditHours, NewCoursesSched, GroupsSched ):-
+choose_subjects_and_generate_schedule(AllowedCreditHours, ObligatoryCourses, CoursesCreditHours, Probation, History, Prerequisites, CoursesTimings, CoursesGroups, SlotsNames, Condensed, TotalCreditHours, FlatCoursesSched, FlatGroupsSched, TakenCoursesTimings ):-
                                                     assign_subjects(AllowedCreditHours, ObligatoryCourses, CoursesCreditHours, Probation, History, Prerequisites, TakenCourses,TotalCreditHours),
                                                     remove_non_taken(CoursesTimings, TakenCourses, TakenCoursesTimings),
                                                     remove_non_taken(CoursesGroups, TakenCourses, TakenCoursesGroups),
@@ -189,11 +189,8 @@ choose_subjects_and_generate_schedule(AllowedCreditHours, ObligatoryCourses, Cou
                                                     max_list(FlatTakenCoursesGroups,MaxGroupNo),
                                                     assign_sched(CoursesSched, GroupsSched, TakenCoursesTimings, TakenCoursesGroups, Condensed, MaxSlotID, MaxGroupNo),
                                                     flatten(CoursesSched, FlatCoursesSched),
+                                                    flatten(GroupsSched,FlatGroupsSched),
                                                     get_sched_with_slot_names(FlatCoursesSched,FlatTakenSlotsNames, NewCoursesSched ).
-
-
-
-
 
 :- [load].
 

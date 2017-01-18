@@ -97,14 +97,13 @@ function parse(entries) {
 			var idx;
             for (var k = j; k < entries.length && type == entries[k][4]&& course == entries[k][0];) {
                 var group = entries[k][5];
-				console.log(group);
                 idx = 0;
                 if (!groupMap[group]) {
                     groupSoFar++;
                     groupMap[group] = groupSoFar;
                 }
                 for (var l = k; l < entries.length && group == entries[l][5] && type == entries[l][4]&& course == entries[l][0]; l++) {
-					if (!timingsCourse[idx])
+                    if (!timingsCourse[idx])
                         timingsCourse[idx] = new Array();
                     if (!groupsCourse[idx]) {
                         groupsCourse[idx] = new Array();

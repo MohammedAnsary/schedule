@@ -49,9 +49,8 @@ router.post('/next', function(req, res) {
     history = JSON.stringify(history);
 
     var coursesTimings = JSON.stringify(data.parsed.parsedTimings).replace(/['"]+/g, '');
-
     var coursesGroups = JSON.stringify(data.parsed.parsedGroups).replace(/['"]+/g, '');
-
+    console.log(coursesTimings)
     var slotNames = JSON.stringify(data.parsed.slotsNames).replace(/['"]+/g, '').toLowerCase()
 
     var creditHours = new Array();
@@ -60,16 +59,12 @@ router.post('/next', function(req, res) {
         creditHours.push(value);
     }
     creditHours = JSON.stringify(creditHours);
-    console.log(creditHours);
-
-    // index.ask("choose_subjects_and_generate_schedule(" + variables.allowedCreditHours + "," + variables.ObligatoryCourses + "," + variables.coursesCreditHours + "," + variables.probation + "," + variables.history + "," + variables.prerequisites + "," + variables.coursesTimings + "," + variables.coursesGroups + "," + variables.slotsNames + "," + variables.condensed + "," + variables.totalCreditHours + "," + variables.newCoursesSched + "," + variables.groupsSched + ")", parseInt(req.body.chunk), function(result) {
-    //     return res.send({
-    //         response: result
-    //     });
-    // });
-    // res.send(user_id + ' ' + token + ' ' + geo);
-    // console.log(req.body);
-    res.send(req.body);
+    prerequisites = "[[],[1],[],[3,6],[3,5],[3],[3,6],[3,6],[3,6],[3,6],[3,6],[3,6],[3,6],[3,6],[3,6],[3,6],[3,6],[3,6],[],[],[20,19],[],[22],[22],[],[25],[25],[],[1]]"  
+    index.ask(`choose_subjects_and_generate_schedule(${allowedCreditHours}, ${obligatoryCourses}, ${creditHours}, ${probation}, ${history}, ${prerequisites}, ${coursesTimings}, ${coursesGroups}, ${slotNames}, ${condensed}, TotalCreditHours, NewCoursesSched, GroupsSched, TakenCourses )`, parseInt(1), function(result) {
+        return res.send({
+            response: result
+        });
+    });
 });
 
 module.exports = router;

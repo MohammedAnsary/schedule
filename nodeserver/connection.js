@@ -26,12 +26,15 @@ module.exports = {
                 results = [];
                     resultData = (ref.length == chunk )? ref[chunk - 1] : "No more solutions";
                     results.push(resultData);
+                    console.log(results);
                callback(results)              
             });  
         peng.on('failure', function(result){
+            console.log(result)
             callback(["no solutions found, please choose another configuration and try again"])
         }); 
         peng.on('error', function(result){
+            console.log(result)
             callback(result)
         });         
     },
@@ -49,6 +52,7 @@ module.exports = {
             callback(results);
         });
         prologRequest.on('error',function(result){
+            console.log(result);
             callback(result);
         });
     },
